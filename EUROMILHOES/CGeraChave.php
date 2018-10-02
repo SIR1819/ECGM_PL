@@ -25,14 +25,19 @@ class GeraChave {
         sort($chave);
         return $chave;
     }
+
+    public function asJSON () {
+        return json_encode($this);
+    }
 }
 
 
 // instanciar um objeto de uma classe
-$chave = new GeraChave();
-
+// $chave = new GeraChave();
 
 // --- TESTES ----
+// echo $chave->asJSON();
+
 // var_dump($chave);
 // var_dump($chave->numeros);
 
