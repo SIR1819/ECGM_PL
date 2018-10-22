@@ -10,7 +10,7 @@ class GeraChave {
     
     // construtor
     public function __construct () {
-        $this->estrelas = $this->gera(1,12,2);
+        $this->estrelas = $this->gera(1,12,3);
         $this->numeros  = $this->gera(1,50,5);
     }
 
