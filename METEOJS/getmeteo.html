@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>Info Meteorológica</title>
+</head>
+<body>
+   <!-- formulario -->
+   <div>
+        <form id="f1" action="http://www.google.com">
+            <input type="text" name="local" id="ilocal">
+            <input type="submit" value="Obter Estado do Tempo">
+        </form>
+   </div> 
+</body>
+<script>
+
+    
+    
+
+
+    var myForm = document.getElementById("f1");
+    
+    myForm.onsubmit = function (evento) {
+        evento.preventDefault();
+        // URL para API do MapQuest
+        var GEOAPIKEY = "XFNxQ82etHEFDAjhOSzhE4hozjwbRq45";
+        var geo_url_base = "http://www.mapquestapi.com/geocoding/v1/address?";
+        var geo_api_key_param = "key=" + GEOAPIKEY;
+    
+        var local = document.getElementById("ilocal").value;
+
+        var geo_api_location_param = "location=" + local;
+        
+        var geo_url =   geo_url_base + 
+                        geo_api_key_param + 
+                        "&" + 
+                        geo_api_location_param;
+
+        console.log(geo_url);
+
+        var myReq = new XMLHttpRequest();
+        myReq.onload =  function () {
+            //console.log(this.responseText);
+            geocode_info = JSON.parse(this.responseText);
+            console.log(geocode_info);
+            var latLng = geocode_info.results[0].locations[0].latLng;
+            var lat = latLng.lat;
+            var lon = latLng.lng;
+            console.log(lat,lon);
+            // -----
+            var meteo_url_base = "https://api.darksky.net/forecast";
+            var meteo_apikey = "814e5b27d87937feb926c8b0178f77c3";
+            var meteo_params = "units=si";
+
+            var meteo_url = meteo_url_base + "/" + meteo_apikey + "/" + lat + "," + lon + "?" + meteo_params;
+            console.log(meteo_url);
+            var myReq2 = new XMLHttpRequest();
+            myReq2.onload = function() {
+                var meteo_info = JSON.parse(this.responseText);
+                var temperatura = meteo_info.currently.temperature;
+                var icon_label = meteo_info["icon"];
+                console.log(temperatura,icon_label);
+            }
+            myReq2.open("GET",meteo_url);
+            myReq2.send();
+
+        }
+        myReq.open("GET",geo_url);
+        myReq.send();
+    }
+
+</script>
+</html>
